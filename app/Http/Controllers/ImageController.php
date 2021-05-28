@@ -35,7 +35,8 @@ class ImageController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        //Se carga la imagen
+        dd($request);
     }
 
     /**
