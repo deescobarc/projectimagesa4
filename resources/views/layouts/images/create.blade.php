@@ -12,6 +12,15 @@
                     <div class="-my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
                         <div class="py-2 align-middle inline-block min-w-full sm:px-6 lg:px-8">
                             <div class="shadow overflow-hidden border-b border-gray-200 sm:rounded-lg">
+                                @if ($errors->any())
+                                    <div class="alert alert-danger">
+                                        <ul>
+                                            @foreach ($errors->all() as $error)
+                                                <li>{{ $error }}</li>
+                                            @endforeach
+                                        </ul>
+                                    </div>
+                                @endif
                                 <form method="POST" action="{{ route('images.store') }}"  enctype="multipart/form-data">
                                     @csrf
                                     <div class="shadow sm:rounded-md sm:overflow-hidden">
@@ -62,7 +71,7 @@
                                                         <div class="flex text-sm text-gray-600">
                                                             <label for="file-upload" class="relative cursor-pointer bg-white rounded-md font-medium text-indigo-600 hover:text-indigo-500 focus-within:outline-none focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-indigo-500">
                                                                 <span>Cargar imagen</span>
-                                                                <input id="file-upload" name="file-upload" type="file" class="sr-only" accept=".jpg, .jpeg">
+                                                                <input id="file-upload" name="file-upload" type="file" class="sr-only" accept=".jpg, .jpeg" required>
                                                             </label>
                                                             <p class="pl-1">o arrastra y suelta</p>
                                                         </div>
