@@ -3802,6 +3802,16 @@ __webpack_require__(/*! ./bootstrap */ "./resources/js/bootstrap.js");
 
 __webpack_require__(/*! alpinejs */ "./node_modules/alpinejs/dist/alpine.js");
 
+try {
+  window.canvas_image_64 = __webpack_require__(/*! ./custom/canvas_image_64 */ "./resources/js/custom/canvas_image_64.js");
+  $(document).ready(function () {
+    window.canvas_image_64.init();
+  });
+} catch (e) {
+  console.error('Ha ocurrido un error en la carga de plugins. Reintentar nuevo.');
+  console.log(e);
+}
+
 /***/ }),
 
 /***/ "./resources/js/bootstrap.js":
@@ -3832,6 +3842,58 @@ window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 //     cluster: process.env.MIX_PUSHER_APP_CLUSTER,
 //     forceTLS: true
 // });
+
+/***/ }),
+
+/***/ "./resources/js/custom/canvas_image_64.js":
+/*!************************************************!*\
+  !*** ./resources/js/custom/canvas_image_64.js ***!
+  \************************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "init": () => (/* binding */ init)
+/* harmony export */ });
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } }
+
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
+
+var app_canvas = /*#__PURE__*/function () {
+  function app_canvas(idCanvas, idImage) {
+    _classCallCheck(this, app_canvas);
+
+    this.idCanvas = idCanvas;
+    this.canvas = document.getElementById(idCanvas);
+    this.context = this.canvas.getContext('2d');
+    this.idImage = idImage;
+  }
+
+  _createClass(app_canvas, [{
+    key: "loadPicture",
+    value: function loadPicture() {
+      var imageObj = new Image();
+      imageObj.src = document.getElementById(this.idImage).getAttribute('src');
+      var context = this.context;
+
+      imageObj.onload = function () {
+        context.drawImage(imageObj, 0, 0);
+      };
+    }
+  }]);
+
+  return app_canvas;
+}();
+
+function init() {
+  var appCanvas = new app_canvas("canvas", 'imageLoad');
+  appCanvas.loadPicture();
+}
+
+
 
 /***/ }),
 
@@ -21315,6 +21377,18 @@ process.umask = function() { return 0; };
 /******/ 				}
 /******/ 			}
 /******/ 			return result;
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/define property getters */
+/******/ 	(() => {
+/******/ 		// define getter functions for harmony exports
+/******/ 		__webpack_require__.d = (exports, definition) => {
+/******/ 			for(var key in definition) {
+/******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
+/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
+/******/ 				}
+/******/ 			}
 /******/ 		};
 /******/ 	})();
 /******/ 	
