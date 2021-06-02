@@ -33376,8 +33376,8 @@ select {
 
 #canvas {
   background-color: #000 !important;
-  height: 796px !important;
-  width: 1123px !important;
+  /*height: 796px !important;*/
+  /*width: 1123px !important;*/
 }
 
 @media (min-width: 640px) {

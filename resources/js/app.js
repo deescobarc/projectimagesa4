@@ -6,7 +6,6 @@ try {
     window.canvas_image_64 = require('./custom/canvas_image_64');
 
     $(document).ready(function () {
-
         window.canvas_image_64.init();
     });
 

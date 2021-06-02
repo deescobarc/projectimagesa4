@@ -3863,24 +3863,57 @@ function _defineProperties(target, props) { for (var i = 0; i < props.length; i+
 function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); return Constructor; }
 
 var app_canvas = /*#__PURE__*/function () {
-  function app_canvas(idCanvas, idImage) {
+  function app_canvas(idCanvas, idImage, size) {
     _classCallCheck(this, app_canvas);
 
     this.idCanvas = idCanvas;
     this.canvas = document.getElementById(idCanvas);
     this.context = this.canvas.getContext('2d');
     this.idImage = idImage;
+    this.size = size;
   }
 
   _createClass(app_canvas, [{
     key: "loadPicture",
     value: function loadPicture() {
       var imageObj = new Image();
-      imageObj.src = document.getElementById(this.idImage).getAttribute('src');
+      var imageReal = document.getElementById(this.idImage);
       var context = this.context;
+      var canvas = this.canvas;
+      var size = this.size;
+      imageObj.src = imageReal.getAttribute('src');
 
       imageObj.onload = function () {
-        context.drawImage(imageObj, 0, 0);
+        // context.drawImage( imageObj, 0, 0 );
+        debugger;
+        var sourceWidth = imageObj.width;
+        var sourceHeight = imageObj.height;
+        var canvasWidth = 0;
+        var canvasHeight = 0; //Se verifica si la altura o el ancho es mayor, para saber la orientación
+
+        if (sourceHeight > sourceWidth) {
+          setSize(size.width, size.height);
+          canvasWidth = size.width;
+          canvasHeight = size.height;
+        } else {
+          setSize(size.height, size.width);
+          canvasWidth = size.height;
+          canvasHeight = size.width;
+        } //Se verifica si la anchura o la altura son mayores al lienzo
+
+
+        if (sourceHeight > canvasHeight || sourceWidth > canvasWidth) {
+          context.drawImage(imageObj, 0, 0, sourceWidth, sourceHeight, 0, 0, canvasWidth, canvasHeight);
+        } else {
+          context.drawImage(imageObj, 0, 0, sourceWidth, sourceHeight);
+        }
+
+        this.style.display = 'none';
+
+        function setSize(width, height) {
+          canvas.setAttribute('width', width + 'px');
+          canvas.setAttribute('height', height + 'px');
+        }
       };
     }
   }]);
@@ -3889,7 +3922,11 @@ var app_canvas = /*#__PURE__*/function () {
 }();
 
 function init() {
-  var appCanvas = new app_canvas("canvas", 'imageLoad');
+  var a4 = {
+    width: 796,
+    height: 1123
+  };
+  var appCanvas = new app_canvas("canvas", 'imageLoad', a4);
   appCanvas.loadPicture();
 }
 
