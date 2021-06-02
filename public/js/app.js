@@ -3889,7 +3889,10 @@ var app_canvas = /*#__PURE__*/function () {
         var sourceWidth = imageObj.width;
         var sourceHeight = imageObj.height;
         var canvasWidth = 0;
-        var canvasHeight = 0; //Se verifica si la altura o el ancho es mayor, para saber la orientación
+        var canvasHeight = 0;
+        var ratio = 1; //Se verifica si la altura o el ancho es mayor, para saber la orientación
+
+        var horizontal = false;
 
         if (sourceHeight > sourceWidth) {
           setSize(size.width, size.height);
@@ -3899,10 +3902,20 @@ var app_canvas = /*#__PURE__*/function () {
           setSize(size.height, size.width);
           canvasWidth = size.height;
           canvasHeight = size.width;
+          horizontal = true;
         } //Se verifica si la anchura o la altura son mayores al lienzo
 
 
-        if (sourceHeight > canvasHeight || sourceWidth > canvasWidth) {
+        if (sourceWidth > canvasWidth && horizontal) {
+          ratio = canvasWidth / sourceWidth;
+        } else if (sourceHeight > canvasHeight && !horizontal) {
+          ratio = canvasHeight / sourceHeight;
+        }
+
+        canvasWidth = horizontal ? canvasWidth : sourceWidth * ratio;
+        canvasHeight = horizontal ? sourceHeight * ratio : canvasHeight;
+
+        if (sourceWidth > canvasWidth || sourceHeight > canvasHeight) {
           context.drawImage(imageObj, 0, 0, sourceWidth, sourceHeight, 0, 0, canvasWidth, canvasHeight);
         } else {
           context.drawImage(imageObj, 0, 0, sourceWidth, sourceHeight);
