@@ -44,9 +44,11 @@
                                                 <td class="px-6 py-4 whitespace-nowrap">
                                                     <div class="flex items-center">
                                                         <div class="flex-shrink-0 h-10 w-10">
-                                                            <a href="{{route('images.show',['image' => $image->id])}}" title="Ver Imagen A4">
-                                                                <img class="h-10 w-10 rounded-full" src="{{asset('storage/images/' . $image->route)}}" alt="...">
-                                                            </a>
+                                                            @if(! $image->trashed())
+                                                                <a href="{{route('images.show',['image' => $image->id])}}" title="Ver Imagen A4">
+                                                                    <img class="h-10 w-10 rounded-full" src="{{asset('storage/images/' . $image->route)}}" alt="...">
+                                                                </a>
+                                                            @endif
                                                         </div>
                                                     </div>
                                                 </td>
@@ -60,16 +62,33 @@
                                                     </div>
                                                 </td>
                                                 <td class="px-6 py-4 whitespace-nowrap">
-                                                    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                                                      Active
-                                                    </span>
+                                                    @if($image->trashed())
+                                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
+                                                            <form action="{{ route('images.restore', ['id' => $image->id]) }}" method="post">
+                                                                <button class="text-indigo-600 hover:text-indigo-900" type="submit" title="Reestablecer">Inactivo</button>
+                                                                @csrf
+                                                                @method('put')
+                                                            </form>
+                                                        </span>
+                                                    @else
+                                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                                            Activo
+                                                        </span>
+                                                    @endif
+
                                                 </td>
                                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                                     {{$image->description}}
                                                 </td>
-                                                <td class="px-6 py-4 whitespace-nowrap">
-                                                    <a href="#" class="text-indigo-600 hover:text-indigo-900" title="Editar"><i class="bi bi-journal-richtext"></i></a>
-                                                    <a href="#" class="text-indigo-600 hover:text-indigo-900" title="Eliminar"><i class="bi bi-trash"></i></a>
+                                                <td class="px-6 py-4 whitespace-nowrap grid grid-cols-4">
+                                                    @if(! $image->trashed())
+                                                        <a href="{{route('images.edit', ['image' => $image])}}" class="text-indigo-600 hover:text-indigo-900" title="Editar"><i class="bi bi-journal-richtext"></i></a>
+                                                        <form action="{{ route('images.destroy', ['image' => $image]) }}" method="post">
+                                                            <button class="text-indigo-600 hover:text-indigo-900" type="submit" title="Eliminar"><i class="bi bi-trash"></i></button>
+                                                            @csrf
+                                                            @method('delete')
+                                                        </form>
+                                                    @endif
                                                 </td>
                                             </tr>
                                         @endforeach

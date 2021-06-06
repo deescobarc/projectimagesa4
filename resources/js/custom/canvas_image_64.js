@@ -64,8 +64,10 @@ class app_canvas {
 
 function init(){
     let a4 = {width: 796, height: 1123};
-    let appCanvas = new app_canvas("canvas", 'imageLoad', a4);
-    appCanvas.loadPicture();
+    if(document.getElementById('canvas')){
+        let appCanvas = new app_canvas("canvas", 'imageLoad', a4);
+        appCanvas.loadPicture();
+    }
 }
 
 export{

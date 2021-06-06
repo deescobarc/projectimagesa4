@@ -16,7 +16,7 @@ class ImageController extends Controller
      */
     public function index()
     {
-        $images = Image::all();
+        $images = Image::withTrashed()->orderBy('id')->get();
 
         return view('layouts.images.index', compact('images'));
     }
@@ -42,8 +42,7 @@ class ImageController extends Controller
 
         $data = $request->validate([
             'name' => 'required',
-            'description' => '',
-            'route' => ''
+            'description' => ''
         ]);
 
         //Se guarda la imagen obtenida
@@ -77,11 +76,11 @@ class ImageController extends Controller
      * Show the form for editing the specified resource.
      *
      * @param  \App\Models\Image  $image
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
      */
     public function edit(Image $image)
     {
-        //
+        return view('layouts.images.edit', compact('image'));
     }
 
     /**
@@ -100,13 +99,30 @@ class ImageController extends Controller
             'route' => ''
         ]);
 
+        //Se guarda la imagen obtenida en caso de ser enviada
+        if($request->file('file-upload')){
+
+            $path = Storage::disk('images')
+                ->putFileAs(
+                    Auth::id(),
+                    $request->file('file-upload'),
+                    $request->file('file-upload')->hashName()
+                );
+
+            //Se borra la imagen anterior
+            Storage::disk('images')->delete($image->route);
+
+            //Se agrega a los datos la ruta de guardado
+            $data['route'] = $path;
+        }
+
         $image->update($data);
 
         return redirect('/images/' . $image->id);
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Remove the specified resource.
      *
      * @param  \App\Models\Image  $image
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Http\Response|\Illuminate\Routing\Redirector
@@ -114,7 +130,32 @@ class ImageController extends Controller
     public function destroy(Image $image)
     {
         $image->delete();
-
         return redirect('/images');
     }
+
+    /**
+     * Restore the specified resource.
+     *
+     * @param $id
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Http\Response|\Illuminate\Routing\Redirector
+     */
+    public function restore($id)
+    {
+        Image::withTrashed()
+            ->where('id', $id)
+            ->restore();
+        return redirect('/images');
+    }
+
+    /**
+     * Restore the specified resource.
+     *
+     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Http\Response|\Illuminate\Routing\Redirector
+     */
+    public function dashboard()
+    {
+        $images = Image::all();
+        return view('layouts.images.dashboard', compact('images'));
+    }
+
 }

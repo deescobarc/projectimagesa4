@@ -19,6 +19,7 @@ class CreateImagesTable extends Migration
             $table->text('description')->nullable();
             $table->string('route');
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

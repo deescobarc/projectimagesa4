@@ -102,6 +102,9 @@ class ImagesModuleTest extends TestCase
         //Compruebo que se redirija a la vista show luego de creado
         $response->assertRedirect('/images/'.$image->id);
 
+        //Se elimina la imagen del disco
+        Storage::disk('images')->delete($image->route);
+
     }
 
     /** @test */
@@ -116,7 +119,7 @@ class ImagesModuleTest extends TestCase
         //Datos de prueba
         $image = Image::factory()->create();
 
-        //Envío un end-point http , para crear una nueva imagen sobre la ruta /images
+        //Envío un end-point http , para actualizar una nueva imagen sobre la ruta /images
         $response = $this->put('/images/' . $image->id, [
             'name' => 'Test name',
             'description'=> 'Test description',
@@ -135,6 +138,9 @@ class ImagesModuleTest extends TestCase
 
         //Compruebo que se redirija a la vista show luego de creado
         $response->assertRedirect('/images/'.$image->id);
+
+        //Se elimina la imagen del disco
+        Storage::disk('images')->delete($image->route);
     }
 
     /** @test */
@@ -149,7 +155,7 @@ class ImagesModuleTest extends TestCase
         //Datos de prueba
         $image = Image::factory()->create();
 
-        //Envío un end-point http , para crear una nueva imagen sobre la ruta /images
+        //Envío un end-point http , para eliminar una imagen sobre la ruta /images
         $response = $this->delete('/images/' . $image->id);
 
         //Compruebo que no existan registros en DB dado que solo había uno
@@ -177,7 +183,7 @@ class ImagesModuleTest extends TestCase
     }
 
     /** @test */
-    public function test_image_can_be_uploaded()
+    public function test_image_can_be_uploaded_in_create()
     {
         //Se muestran excepciones para ver correctamente el error
         $this->withoutExceptionHandling();
@@ -195,9 +201,71 @@ class ImagesModuleTest extends TestCase
             'file-upload' => $fileImage
         ]);
 
+        $image = Image::first();
+
         //Compruebo que el archivo se almacenó
         Storage::disk('images')->assertExists(Auth::id() . '/' . $fileImage->hashName());
 
+        //Se elimina la imagen del disco
+        Storage::disk('images')->delete($image->route);
+
+    }
+
+    /** @test */
+    public function test_image_can_be_uploaded_in_edit()
+    {
+        //Se muestran excepciones para ver correctamente el error
+        $this->withoutExceptionHandling();
+
+        //Autenticación de usuario para poder utilizar la función
+        $this->actingAs($user = User::factory()->create());
+
+        //Se crea la imagen para probar
+        $fileImage = UploadedFile::fake()->image('image1.jpg');
+
+        //Datos de prueba
+        $image = Image::factory()->create();
+
+        //Envío un end-point http , para actualizar una nueva imagen sobre la ruta /images
+        $response = $this->put('/images/' . $image->id, [
+            'name' => 'Test name',
+            'description'=> 'Test description',
+            'file-upload' => UploadedFile::fake()->image('image1.jpg')
+        ]);
+
+        //Se actualiza el modelo
+        $image = $image->fresh();
+
+        //Compruebo que el archivo se almacenó
+        Storage::disk('images')->assertExists($image->route);
+
+        //Se elimina la imagen del disco
+        Storage::disk('images')->delete($image->route);
+    }
+
+    /** @test */
+    public function an_image_can_be_restored()
+    {
+        //Se muestran excepciones para ver correctamente el error
+        $this->withoutExceptionHandling();
+
+        //Autenticación de usuario para poder utilizar la función
+        $this->actingAs($user = User::factory()->create());
+
+        //Datos de prueba
+        $image = Image::factory()->create();
+
+        //Elimino la imagen para reestablecerla
+        $image->delete();
+
+        //Obtengo la imagen borrada
+        $image = Image::withTrashed()->first();
+
+        //Envío un end-point http , para reestablecer la imagen sobre la ruta /images/restore
+        $response = $this->put('/images/restore/' . $image->id);
+
+        //Compruebo que exista de nuevo el registro
+        $this->assertCount(1,Image::all());
     }
 
 

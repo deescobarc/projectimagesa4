@@ -13,24 +13,13 @@
                 <div class="slideshow-container">
 
                     <!-- Full-width images with number and caption text -->
-                    <div class="mySlides fade">
-                        <div class="numbertext">1 / 3</div>
-                        <img src="{{asset('storage/twitter_cards.png')}}" style="width:100%">
-                        <div class="text">Caption Text</div>
-                    </div>
-
-                    <div class="mySlides fade">
-                        <div class="numbertext">2 / 3</div>
-                        <img src="{{asset('storage/proteccion_logo-n.jpg')}}" style="width:100%">
-                        <div class="text">Caption Two</div>
-                    </div>
-
-                    <div class="mySlides fade">
-                        <div class="numbertext">3 / 3</div>
-                        <img src="{{asset('storage/logo-proteccion-escudo_23-2147498522.jpg')}}" style="width:100%">
-                        <div class="text">Caption Three</div>
-                    </div>
-
+                    @foreach($images as $index => $image)
+                        <div class="mySlides fade">
+                            <div class="numbertext">{{$index + 1}} / {{$images->count()}}</div>
+                            <img src="{{asset('storage/images/' . $image->route)}}" style="width:100%">
+                            <div class="text">{{$image->name}}</div>
+                        </div>
+                    @endforeach
                     <!-- Next and previous buttons -->
                     <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
                     <a class="next" onclick="plusSlides(1)">&#10095;</a>
@@ -39,9 +28,9 @@
 
                 <!-- The dots/circles -->
                 <div style="text-align:center">
-                    <span class="dot" onclick="currentSlide(1)"></span>
-                    <span class="dot" onclick="currentSlide(2)"></span>
-                    <span class="dot" onclick="currentSlide(3)"></span>
+                    @foreach($images as $index => $image)
+                        <span class="dot" onclick="currentSlide({{$index + 1}})"></span>
+                    @endforeach
                 </div>
             </div>
         </div>

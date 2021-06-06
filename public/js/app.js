@@ -3939,8 +3939,11 @@ function init() {
     width: 796,
     height: 1123
   };
-  var appCanvas = new app_canvas("canvas", 'imageLoad', a4);
-  appCanvas.loadPicture();
+
+  if (document.getElementById('canvas')) {
+    var appCanvas = new app_canvas("canvas", 'imageLoad', a4);
+    appCanvas.loadPicture();
+  }
 }
 
 
