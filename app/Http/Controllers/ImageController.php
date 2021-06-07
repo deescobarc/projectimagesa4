@@ -16,7 +16,7 @@ class ImageController extends Controller
      */
     public function index()
     {
-        $images = Image::withTrashed()->orderBy('id')->get();
+        $images = Image::withTrashed()->orderBy('id')->where('user_id',Auth::id())->get();
 
         return view('layouts.images.index', compact('images'));
     }
@@ -53,8 +53,9 @@ class ImageController extends Controller
                 $request->file('file-upload')->hashName()
             );
 
-        //Se agrega a los datos la ruta de guardado
+        //Se agrega a los datos la ruta de guardado y el usuario autenticado
         $data['route'] = $path;
+        $data['user_id'] = Auth::id();
 
         $image = Image::create($data);
 
@@ -94,7 +95,7 @@ class ImageController extends Controller
     {
         //Se carga la imagen
         $data = $request->validate([
-            'name' => '',
+            'name' => 'required',
             'description' => '',
             'route' => ''
         ]);
@@ -154,7 +155,7 @@ class ImageController extends Controller
      */
     public function dashboard()
     {
-        $images = Image::all();
+        $images = Image::where('user_id',Auth::id())->orderBy('id')->get();
         return view('layouts.images.dashboard', compact('images'));
     }
 

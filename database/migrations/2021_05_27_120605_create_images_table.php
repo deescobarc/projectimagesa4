@@ -18,8 +18,12 @@ class CreateImagesTable extends Migration
             $table->string('name');
             $table->text('description')->nullable();
             $table->string('route');
+            $table->unsignedInteger('user_id')->nullable();
             $table->timestamps();
             $table->softDeletes();
+
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade')->onUpdate('cascade');
+
         });
     }
 
