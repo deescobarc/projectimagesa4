@@ -86,12 +86,15 @@ Se desarrolló una aplicación responsive, para cualquier tamaño de pantalla.
 
 Se instaló el analizador de código llamado SonarQube basado en reglas y evidencias que se enfocan en:
 
-* Los bloques duplicados
-* Las pruebas unitarias falladas
-* Ramas cubiertas por las pruebas unitarias insuficientes
-* Densidad de comentarios insuficientes
+* Bugs
+* Vulnerabilidades
+* Seguridad
+* Deuda técnica
 * Cobertura de líneas cubierta por pruebas unitarias insuficientes
-* Pruebas unitarias omitidas
+* Duplicación de código
+
+![Analizador de código](img_readme/analizador_codigo.png "Analizador de código")
+
 
 ### Aspectos funcionales
 
