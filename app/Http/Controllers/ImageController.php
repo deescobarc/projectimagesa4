@@ -96,8 +96,7 @@ class ImageController extends Controller
         //Se carga la imagen
         $data = $request->validate([
             'name' => 'required',
-            'description' => '',
-            'route' => ''
+            'description' => ''
         ]);
 
         //Se guarda la imagen obtenida en caso de ser enviada
