@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Storage;
 class ImageController extends Controller
 {
     /**
-     * Display a listing of the resource.
+     * Mostrar listado de imágenes.
      *
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
      */
@@ -22,7 +22,7 @@ class ImageController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Mostrar vista de creación de imágenes.
      *
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
      */
@@ -32,7 +32,7 @@ class ImageController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Recibir los datos y guardar una imagen.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Http\Response|\Illuminate\Routing\Redirector
@@ -63,7 +63,7 @@ class ImageController extends Controller
     }
 
     /**
-     * Display the specified resource.
+     * Mostrar una imagen específica.
      *
      * @param  \App\Models\Image  $image
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
@@ -74,7 +74,7 @@ class ImageController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Mostrar vista de edición de imágenes.
      *
      * @param  \App\Models\Image  $image
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\Response
@@ -85,7 +85,7 @@ class ImageController extends Controller
     }
 
     /**
-     * Update the specified resource in storage.
+     * Recibir los datos de una imagen específica y actualizarlos.
      *
      * @param  \Illuminate\Http\Request  $request
      * @param  \App\Models\Image  $image
@@ -122,7 +122,7 @@ class ImageController extends Controller
     }
 
     /**
-     * Remove the specified resource.
+     * Eliminar una imagen especifica.
      *
      * @param  \App\Models\Image  $image
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Http\Response|\Illuminate\Routing\Redirector
@@ -134,7 +134,7 @@ class ImageController extends Controller
     }
 
     /**
-     * Restore the specified resource.
+     * Restaurar una imagen específica.
      *
      * @param $id
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Http\Response|\Illuminate\Routing\Redirector
@@ -148,7 +148,7 @@ class ImageController extends Controller
     }
 
     /**
-     * Restore the specified resource.
+     * Mostrar el dashboard con las imágenes cargadas del usuario.
      *
      * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Http\RedirectResponse|\Illuminate\Http\Response|\Illuminate\Routing\Redirector
      */
